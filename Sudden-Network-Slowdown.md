@@ -53,7 +53,7 @@ At `2026-02-24T14:19:33.4564258Z`, a powershell script called `portscan.ps1` was
 
 After logging into the machine in question, we can see observe the script that was launched.
 
-![code](/images/code.png)
+![code](/images-sc2/code.png)
 
 We can see which account executed the command with the query here.
 ```
