@@ -15,7 +15,7 @@ DeviceNetworkEvents
 | where DeviceName == "ktran-vm"
 ```
 The device `ktran-vm` has many failed connections to two different IP addresses.
-![Failed Connections](/images-sc2/failed-connections)
+![Failed Connections](/images-sc2/failed-connections.png)
 We can investigate these failed connections with the two queries below.
 ```
 let IPInQuestion1 = "10.0.0.161";
@@ -25,7 +25,7 @@ DeviceNetworkEvents
 | order by Timestamp desc
 | where DeviceName == "ktran-vm"
 ```
-![Port Scan 1](/images-sc2/port-scan-1)
+![Port Scan 1](/images-sc2/port-scan-1.png)
 ```
 let IPInQuestion2 = "10.0.0.171";
 DeviceNetworkEvents
@@ -34,7 +34,7 @@ DeviceNetworkEvents
 | order by Timestamp desc
 | where DeviceName == "ktran-vm"
 ```
-![Port Scan 2](/images-sc2/port-scan-2)
+![Port Scan 2](/images-sc2/port-scan-2.png)
 
 Let's observe all logs from the device through the `DeviceProcessEvents` table 10 minutes prior to when the scan took place.
 ```
@@ -47,13 +47,13 @@ DeviceProcessEvents
 | project Timestamp, FileName, InitiatingProcessCommandLine
 ```
 We find an interesting log.
-![Port scan command](/images-sc2/ps-command)
+![Port scan command](/images-sc2/ps-command.png)
 
 At `2026-02-24T14:19:33.4564258Z`, a powershell script called `portscan.ps1` was executed.
 
 After logging into the machine in question, we can see observe the script that was launched.
 
-![code](/images/code)
+![code](/images/code.png)
 
 We can see which account executed the command with the query here.
 ```
