@@ -37,20 +37,19 @@ DeviceLogonEvents
 | order by Attempts
 ```
 As seen below, the machine has been targeted by various IPs.
-[Brute-Force-Attempts](brute-force-attempts)
+![Brute-Force-Attempts](/images-th/brute-force-attempts.png)
 
 Check for successful logons from some of the top IPs with the most brute force attempts
 ```
+let RemoteIPsInQuestion = dynamic(["119.42.115.235","183.81.169.238", "74.39.190.50", "121.30.214.172", "83.222.191.62", "45.41.204.12", "192.109.240.116"]);
 DeviceLogonEvents
-| where DeviceName == "windows-target-"
 | where LogonType has_any("Network", "Interactive", "RemoteInteractive", "Unlock")
-| where ActionType == "LogonFailed"
-| where isnotempty(RemoteIP)
-| summarize Attempts = count() by ActionType, RemoteIP, DeviceName
-| order by Attempts
+| where ActionType == "LogonSuccess"
+| where RemoteIP has_any(RemoteIPsInQuestion)
+
 ```
 
-[failed logons]()
+![no results](/images-th/no-results.png)
 
 Lets check for any successful logons for `windows-target-1`
 ```
@@ -91,11 +90,9 @@ DeviceLogonEvents
 | where AccountName == "labuser0"
 | summarize LoginCount = count() by DeviceName, ActionType, AccountName, RemoteIP
 ```
-[labuser-logon-success](labuser-logon-success)
+![labuser-logon-success](/images-th/labuser-logon-success.png)
 
 By clicking on the IP addresses in the logs, we can check the geographical location of where the successful logons took place. All of the evidence looks normal. 
-
-So far, the two IoC
 
 See if any attackers have successful and unsuccessful logon attempts
 ```
@@ -117,8 +114,7 @@ FailedLogons
 | join SuccessfulLogons on RemoteIP
 | project RemoteIP, DeviceName, FailedLogonAttempts, SuccessfulLogons, AccountName
 ```
-[no results]()
-
+![no results](/images-th/no-results.png)
 
 
 # MITRE ATT&CK Mapping
