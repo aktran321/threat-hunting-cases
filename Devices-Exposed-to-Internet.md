@@ -92,30 +92,7 @@ DeviceLogonEvents
 ```
 ![labuser-logon-success](/images-th/labuser-logon-success.png)
 
-By clicking on the IP addresses in the logs, we can check the geographical location of where the successful logons took place. All of the evidence looks normal. 
-
-See if any attackers have successful and unsuccessful logon attempts
-```
-// Investigate for potential brute force successes
-let FailedLogons = DeviceLogonEvents
-| where LogonType has_any("Network", "Interactive", "RemoteInteractive", "Unlock")
-| where ActionType == "LogonFailed"
-| where isnotempty(RemoteIP)
-| summarize FailedLogonAttempts = count() by ActionType, RemoteIP, DeviceName
-| order by FailedLogonAttempts;
-let SuccessfulLogons =  DeviceLogonEvents
-| where LogonType has_any("Network", "Interactive", "RemoteInteractive", "Unlock")
-| where ActionType == "LogonSuccess"
-| where isnotempty(RemoteIP)
-| summarize SuccessfulLogons = count() by ActionType, RemoteIP, DeviceName, AccountName
-| order by SuccessfulLogons;
-FailedLogons
-| where DeviceName == "windows-target-"
-| join SuccessfulLogons on RemoteIP
-| project RemoteIP, DeviceName, FailedLogonAttempts, SuccessfulLogons, AccountName
-```
-![no results](/images-th/no-results.png)
-
+By clicking on the IP addresses in the logs, we can check the geographical location of where the successful logons took place. All of the evidence looks normal, as the logins only came from the private network and one sign-in from Japan, where the user was traveling at the time.
 
 # MITRE ATT&CK Mapping
 Observed
