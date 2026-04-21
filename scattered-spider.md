@@ -41,8 +41,7 @@ SigninLogs
 | where IPAddress == "205.147.16.190"
 | project TimeGenerated, ResultType, ResultSignature
 ```
-
-![mfa-brute-force](/images-scsp/[mfa-brute-force.png)
+![mfa-brute-force](/images-scsp/mfa-brute-force.png)
 
 After the successful sign-in the attacker accessed the app `One Outlook Web`
 ![app-name](/images-scsp/app-name.png)
